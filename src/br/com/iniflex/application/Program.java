@@ -1,13 +1,12 @@
 package br.com.iniflex.application;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -16,10 +15,7 @@ import br.com.iniflex.entities.Funcionario;
 public class Program {
 
 	public static void main(String[] args) {
-
-		double number = 1234567.89;
-		NumberFormat formatterNum = NumberFormat.getInstance(new Locale("pt", "BR"));
-		formatterNum.setMaximumFractionDigits(2);
+		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 
 		// 3.1 – Inserir todos os funcionários, na mesma ordem e informações da tabela
 		// acima.
@@ -95,11 +91,25 @@ public class Program {
 				.min((e1, e2) -> e1.getDataNascimento().compareTo(e2.getDataNascimento())).orElse(null);
 
 		LocalDate hoje = LocalDate.now();
+		
 		//Método between de Period, Retorna a diferença, em anos, entre dois LocalDates
 		Period idade = Period.between(maiorIdade.getDataNascimento(), hoje);
 		System.out.println(
 				"Funcionário com maior idade: " + maiorIdade.getNome() + ", idade: " + idade.getYears() + " anos");
-
+		System.out.println();
+		//3.10 – Imprimir a lista de funcionários por ordem alfabética.
+		funcionarios.stream()
+		
+	    .sorted((e1, e2) -> e1.getNome().compareTo(e2.getNome()))
+	    .forEach(e -> System.out.println(e));
+		System.out.println();
+		
+		//3.11 – Imprimir o total dos salários dos funcionários.
+		BigDecimal totalSalario = funcionarios.stream()
+	    .map(Funcionario::getSalario)
+	    .reduce(BigDecimal.ZERO, BigDecimal::add);
+		System.out.println("Soma dos salários: R$ " + formatter.format(totalSalario));
+		
 	}
 
 }
