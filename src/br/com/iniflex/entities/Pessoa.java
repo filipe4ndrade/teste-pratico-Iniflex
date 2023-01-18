@@ -27,8 +27,8 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public String getDataNascimento() {
-		return formatter.format(dataNascimento);
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
 
 	public void setDataNascimento(String dataNascimento) {

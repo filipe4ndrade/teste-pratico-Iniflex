@@ -2,20 +2,24 @@ package br.com.iniflex.application;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import br.com.iniflex.entities.Funcionario;
 
 public class Program {
 
 	public static void main(String[] args) {
-	
-		
+
 		double number = 1234567.89;
 		NumberFormat formatterNum = NumberFormat.getInstance(new Locale("pt", "BR"));
-		formatterNum .setMaximumFractionDigits(2);
+		formatterNum.setMaximumFractionDigits(2);
 
 		// 3.1 – Inserir todos os funcionários, na mesma ordem e informações da tabela
 		// acima.
@@ -43,15 +47,58 @@ public class Program {
 		for (Funcionario funcionario : funcionarios) {
 			System.out.println(funcionario);
 		}
-		System.out.println();
+
 		// 3.4 – Os funcionários receberam 10% de aumento de salário, atualizar a lista
 		// de funcionários com novo valor.
 		for (Funcionario funcionario : funcionarios) {
 			funcionario.setSalario(funcionario.getSalario().multiply(new BigDecimal("1.1")));
 		}
-		for (Funcionario funcionario : funcionarios) {
-			System.out.println(funcionario);
-		}
+		System.out.println();
+		// 3.5 – Agrupar os funcionários por função em um MAP, sendo a chave a “função”
+		// e o valor a “lista de funcionários”.
+
+		Map<String, List<Funcionario>> map = new HashMap<>() {
+			{
+
+				put("Operador", funcionarios.stream().filter(x -> x.getFuncao().equals("Operador"))
+						.collect(Collectors.toList()));
+				put("Coordenador", funcionarios.stream().filter(x -> x.getFuncao().equals("Coordenador"))
+						.collect(Collectors.toList()));
+				put("Diretor", funcionarios.stream().filter(x -> x.getFuncao().equals("Diretor"))
+						.collect(Collectors.toList()));
+				put("Recepcionista", funcionarios.stream().filter(x -> x.getFuncao().equals("Recepcionista"))
+						.collect(Collectors.toList()));
+				put("Contador", funcionarios.stream().filter(x -> x.getFuncao().equals("Contador"))
+						.collect(Collectors.toList()));
+				put("Gerente", funcionarios.stream().filter(x -> x.getFuncao().equals("Gerente"))
+						.collect(Collectors.toList()));
+				put("Eletricista", funcionarios.stream().filter(x -> x.getFuncao().equals("Eletricista"))
+						.collect(Collectors.toList()));
+
+			}
+		};
+
+		// 3.6 – Imprimir os funcionários, agrupados por função.
+		map.forEach((key, value) -> System.out.println("Função: " + key + ", Lista de Funcionários: " + value));
+		System.out.println();
+		// 3.8 – Imprimir os funcionários que fazem aniversário no mês 10 e 12.
+
+		funcionarios.stream()
+				.filter(x -> x.getDataNascimento().getMonthValue() == 10 || x.getDataNascimento().getMonthValue() == 12)
+				.forEach(x -> System.out.println(x));
+		System.out.println();
+
+		// 3.9 – Imprimir o funcionário com a maior idade, exibir os atributos: nome e
+		// idade.
+		//método min, pois retorna o menor ano
+		Funcionario maiorIdade = funcionarios.stream()
+				.min((e1, e2) -> e1.getDataNascimento().compareTo(e2.getDataNascimento())).orElse(null);
+
+		LocalDate hoje = LocalDate.now();
+		//Método between de Period, Retorna a diferença, em anos, entre dois LocalDates
+		Period idade = Period.between(maiorIdade.getDataNascimento(), hoje);
+		System.out.println(
+				"Funcionário com maior idade: " + maiorIdade.getNome() + ", idade: " + idade.getYears() + " anos");
 
 	}
 

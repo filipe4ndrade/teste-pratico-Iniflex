@@ -3,10 +3,12 @@ package br.com.iniflex.entities;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Funcionario extends Pessoa {
 	DecimalFormat formatter = new DecimalFormat("#,##0.00");
+	DateTimeFormatter formatterD = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private BigDecimal salario;
 	private String funcao;
@@ -40,7 +42,7 @@ public class Funcionario extends Pessoa {
 	@Override
 	public String toString() {
 		formatter.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
-		return "Nome= " + getNome() + ", DatadeNascimento= " + getDataNascimento() + ", Salario= R$ "
+		return "Nome= " + getNome() + ", DatadeNascimento= " + formatterD.format(getDataNascimento()) + ", Salario= R$ "
 				+ formatter.format(salario) + ", Função= " + funcao;
 	}
 
