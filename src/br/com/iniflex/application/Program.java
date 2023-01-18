@@ -1,6 +1,7 @@
 package br.com.iniflex.application;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -109,6 +110,18 @@ public class Program {
 	    .map(Funcionario::getSalario)
 	    .reduce(BigDecimal.ZERO, BigDecimal::add);
 		System.out.println("Soma dos salários: R$ " + formatter.format(totalSalario));
+		System.out.println();
+		
+		//3.12 – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.
+		BigDecimal salarioMinimo = new BigDecimal("1212.00");
+		
+		for (Funcionario funcionario : funcionarios) {
+		    BigDecimal salarioFuncionario = funcionario.getSalario();
+		    BigDecimal salariosMinimo = salarioFuncionario.divide(salarioMinimo,2, RoundingMode.HALF_UP);
+		    System.out.println(funcionario.getNome() + " ganha " + salariosMinimo + " salários mínimos");
+		}
+
+
 		
 	}
 
