@@ -61,6 +61,8 @@ public class Program {
 				+ "	• informação de valor numérico deve ser exibida no formatado com separador de\r\n"
 				+ "milhar como ponto e decimal como vírgula."+ANSI_RESET);
 		System.out.println();
+		
+		
 		for (Funcionario funcionario : funcionarios) {
 			System.out.println(funcionario);
 		}
